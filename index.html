@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Web Design System — Foundations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --ci-100:#eeeaff; --ci-200:#d5cef5; --ci-300:#b6a9eb; --ci-400:#856ee0;
+  --ci-500:#674ecc; --ci-600:#4c31b9; --ci-700:#39258a; --ci-800:#2b1d66; --ci-900:#1c1243;
+  --vb-100:#e8f2ff; --vb-200:#b8d5fe; --vb-300:#80b5fe; --vb-400:#3488fe;
+  --vb-500:#015bda; --vb-600:#003f98; --vb-700:#003073; --vb-800:#01285e; --vb-900:#031c40;
+  --su-100:#e5f5e8; --su-200:#c7e6cc; --su-300:#9ed1a6; --su-400:#6fbe7c;
+  --su-500:#46a456; --su-600:#358242; --su-700:#276231; --su-800:#1c4022; --su-900:#112715;
+  --da-100:#f8e8e7; --da-200:#edccc9; --da-300:#e2a6a2; --da-400:#da827c;
+  --da-500:#d65a51; --da-600:#c03a30; --da-700:#9c241c; --da-800:#5b1a15; --da-900:#34110e;
+  --wa-100:#ffebdc; --wa-200:#f9dac3; --wa-300:#f7ccab; --wa-400:#f1aa74;
+  --wa-500:#e97720; --wa-600:#cc6414; --wa-700:#a75211; --wa-800:#6f370b; --wa-900:#3c1e06;
+  --ne-100:#f4f4f5; --ne-200:#d6d6db; --ne-300:#b7b7c2; --ne-400:#9999a8;
+  --ne-500:#7b7b8e; --ne-600:#606071; --ne-700:#454554; --ne-800:#2e2e38; --ne-900:#1c1c22;
+  --pr-100:#faf4e0; --pr-200:#f4e7bd; --pr-300:#ecd58d; --pr-400:#e5c35d;
+  --pr-500:#ddb12c; --pr-600:#b48e1d; --pr-700:#846815; --pr-800:#58450e; --pr-900:#352a09;
+  --di-100:#f7e4f0; --di-200:#edc4e0; --di-300:#e199c9; --di-400:#d46eb2;
+  --di-500:#c7439b; --di-600:#a1307b; --di-700:#76235a; --di-800:#4f173c; --di-900:#2f0e24;
+  --bg:#f8f8fa; --surface:#ffffff; --border:#e8e8ed;
+  --text-1:#1c1c22; --text-2:#454554; --text-3:#9999a8;
+  --sidebar-w: 220px;
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family:'DM Sans',system-ui,sans-serif;
+  background:var(--bg); color:var(--text-1);
+  font-size:15px; line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── NAV ── */
+nav {
+  position:sticky; top:0; z-index:100;
+  background:rgba(248,248,250,0.92); backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+  height:56px; padding:0 48px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.nav-left { display:flex; align-items:center; gap:10px; }
+.nav-logo {
+  width:28px; height:28px; border-radius:7px;
+  background:linear-gradient(135deg,var(--ci-600),var(--vb-500));
+  display:grid; place-items:center;
+}
+.nav-logo svg { width:14px; height:14px; }
+.nav-name { font-size:13px; font-weight:700; color:var(--text-1); letter-spacing:-0.01em; }
+.nav-name span { color:var(--text-3); font-weight:400; }
+.nav-v {
+  font-size:11px; font-weight:600; padding:3px 9px; border-radius:999px;
+  background:var(--ne-100); color:var(--text-3); border:1px solid var(--border);
+}
+
+/* ── PAGE LAYOUT ── */
+.page-body {
+  display:grid;
+  grid-template-columns: var(--sidebar-w) 1fr;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  position: sticky;
+  top: 56px;
+  height: calc(100vh - 56px);
+  overflow-y: auto;
+  padding: 32px 0 40px;
+  border-right: 1px solid var(--border);
+  background: var(--surface);
+  flex-shrink: 0;
+}
+.sidebar::-webkit-scrollbar { width: 3px; }
+.sidebar::-webkit-scrollbar-track { background: transparent; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+
+.sb-section-label {
+  font-size:10px; font-weight:700; letter-spacing:0.09em; text-transform:uppercase;
+  color:var(--text-3); padding:0 20px 6px; margin-top:12px;
+}
+.sb-nav { list-style:none; }
+.sb-nav li a {
+  display:flex; align-items:center; gap:8px;
+  font-size:13px; font-weight:500; color:var(--text-2);
+  text-decoration:none; padding:7px 12px; margin:1px 8px;
+  border-radius:6px;
+}
+.sb-nav li a:hover { color:var(--text-1); background:var(--ne-100); }
+.sb-nav li a.active { color:var(--ci-700); background:var(--ne-100); font-weight:600; }
+.sb-nav li a .sb-dot { width:7px; height:7px; border-radius:999px; flex-shrink:0; }
+
+.sb-sub { list-style:none; }
+.sb-sub li a {
+  display:block; font-size:12px; color:var(--text-3);
+  text-decoration:none; padding:5px 12px 5px 28px; margin:1px 8px;
+  border-radius:6px;
+}
+.sb-sub li a:hover { color:var(--text-1); background:var(--ne-100); }
+.sb-sub li a.active { color:var(--ci-700); background:var(--ne-100); font-weight:500; }
+
+.sb-divider { height:1px; background:var(--border); margin:16px 20px; }
+
+.sb-panel-badge {
+  display:flex; align-items:center; gap:6px;
+  font-size:11px; font-weight:600; padding:5px 20px;
+  color:var(--text-3);
+}
+.sb-panel-dot { width:6px; height:6px; border-radius:999px; }
+.sb-coming-soon {
+  font-size:11px; font-weight:500; color:var(--text-3);
+  padding:6px 20px; font-style:italic;
+}
+
+/* ── MAIN CONTENT ── */
+.main {
+  padding: 0;
+  min-width: 0;
+}
+
+/* ── HERO ── */
+.hero {
+  padding:72px 64px 60px;
+  display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center;
+  border-bottom:1px solid var(--border);
+}
+.hero-eye { font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--ci-500); margin-bottom:14px; }
+.hero-h1 { font-size:44px; font-weight:700; line-height:1.08; letter-spacing:-0.025em; color:var(--ne-900); margin-bottom:16px; }
+.hero-h1 em { font-style:normal; color:var(--ci-600); }
+.hero-p { font-size:15px; color:var(--text-2); line-height:1.7; margin-bottom:28px; max-width:420px; }
+.hero-panels { display:flex; gap:8px; margin-bottom:32px; }
+.ppill {
+  display:flex; align-items:center; gap:6px;
+  font-size:12px; font-weight:600; padding:5px 12px;
+  border-radius:999px; border:1.5px solid;
+}
+.ppill-dot { width:7px; height:7px; border-radius:999px; }
+.pci { background:var(--ci-100); color:var(--ci-700); border-color:var(--ci-200); }
+.pci .ppill-dot { background:var(--ci-600); }
+.pvb { background:var(--vb-100); color:var(--vb-700); border-color:var(--vb-200); }
+.pvb .ppill-dot { background:var(--vb-500); }
+.hero-stats { display:flex; gap:20px; align-items:center; flex-wrap:wrap; }
+.hstat { display:flex; flex-direction:column; gap:2px; }
+.hstat-val { font-size:21px; font-weight:700; letter-spacing:-0.03em; color:var(--ci-700); }
+.hstat-lbl { font-size:10px; font-weight:600; color:var(--text-3); text-transform:uppercase; letter-spacing:0.07em; }
+.sdiv { width:1px; background:var(--border); align-self:stretch; margin:2px 0; }
+
+/* Hero visual */
+.hv { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:20px; box-shadow:0 4px 28px rgba(28,28,34,0.07); }
+.hv-lbl { font-size:10px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-3); margin-bottom:10px; }
+.hv-div { height:1px; background:var(--border); margin:13px 0; }
+.dual { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.bstrip-lbl { font-size:10px; font-weight:600; padding:5px 8px; display:flex; align-items:center; gap:5px; border-radius:6px 6px 0 0; }
+.bstrip-lbl span { width:6px; height:6px; border-radius:999px; display:inline-block; }
+.bswatches { display:grid; grid-template-columns:repeat(9,1fr); height:26px; }
+.bs { width:100%; height:100%; }
+.shared-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:3px; }
+.sc { display:flex; flex-direction:column; gap:2px; }
+.ss { height:14px; border-radius:2px; }
+.slbl { font-size:8px; font-weight:600; text-align:center; color:var(--text-3); margin-top:3px; text-transform:uppercase; }
+.sp-mini { display:flex; align-items:flex-end; gap:5px; }
+.sp-bar { background:var(--ci-100); border:1.5px solid var(--ci-300); border-radius:2px; width:12px; }
+.rr-mini { display:flex; align-items:center; gap:7px; margin-top:9px; }
+.rr-b { width:24px; height:24px; background:var(--ci-100); border:1.5px solid var(--ci-400); }
+
+/* ── SECTION WRAPPER ── */
+.section-wrap {
+  padding: 0 64px;
+}
+
+/* ── PANEL DIVIDER ── */
+.panel-div {
+  padding: 64px 0 0;
+  border-top: 1px solid var(--border);
+  margin-bottom: 40px;
+}
+.panel-div:first-of-type { border-top: none; }
+.plrow { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
+.pldot { width:12px; height:12px; border-radius:999px; }
+.pltag { font-size:11px; font-weight:700; letter-spacing:0.09em; text-transform:uppercase; }
+.ph2 { font-size:24px; font-weight:700; letter-spacing:-0.02em; color:var(--ne-900); margin-bottom:6px; }
+.pdesc { font-size:13px; color:var(--text-2); max-width:580px; }
+
+/* ── FOUNDATION SECTION ── */
+.fsec { margin-bottom:52px; }
+.fhdr { display:flex; align-items:flex-start; gap:16px; padding:28px 0 22px; border-top:1px solid var(--ne-100); }
+.fnum { font-size:11px; font-weight:700; color:var(--text-3); letter-spacing:0.06em; padding-top:3px; min-width:26px; }
+.ftb { flex:1; }
+.ftag {
+  display:inline-flex; align-items:center; font-size:10px; font-weight:700;
+  letter-spacing:0.08em; text-transform:uppercase; padding:3px 9px;
+  border-radius:999px; border:1px solid; margin-bottom:7px;
+}
+.fh3 { font-size:20px; font-weight:700; letter-spacing:-0.02em; color:var(--ne-900); margin-bottom:5px; }
+.fdesc { font-size:13px; color:var(--text-2); max-width:560px; line-height:1.6; }
+
+/* ── PALETTE GRID ── */
+.pg { display:grid; grid-template-columns:repeat(auto-fill,minmax(185px,1fr)); gap:9px; margin-bottom:18px; }
+.pc { background:var(--surface); border:1px solid var(--border); border-radius:10px; overflow:hidden; }
+.pswatches { display:grid; grid-template-columns:repeat(9,1fr); height:32px; }
+.psw { width:100%; height:100%; }
+.pinfo { padding:8px 11px; display:flex; align-items:center; justify-content:space-between; }
+.pname { font-size:11px; font-weight:600; color:var(--text-1); }
+.psteps { font-size:10px; color:var(--text-3); }
+
+/* ── ROLE GRID ── */
+.rg { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:8px; margin-bottom:18px; }
+.rc { background:var(--surface); border:1px solid var(--border); border-radius:9px; padding:12px 13px; display:flex; align-items:flex-start; gap:11px; }
+.rchip { font-size:11px; font-weight:700; color:white; padding:5px 10px; border-radius:6px; white-space:nowrap; flex-shrink:0; min-width:72px; text-align:center; }
+.rdesc { font-size:12px; color:var(--text-2); line-height:1.5; }
+
+/* ── DECISION BOX ── */
+.dbox { border:1px solid var(--border); border-radius:0 9px 9px 0; padding:13px 17px; margin-bottom:16px; background:var(--ne-100); }
+.dtitle { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.07em; margin-bottom:4px; }
+.dbody { font-size:12px; color:var(--text-2); line-height:1.6; }
+.dbody code { font-family:'SF Mono','Fira Code',monospace; font-size:11px; background:var(--border); padding:1px 4px; border-radius:3px; }
+
+/* ── TOKEN TABLE ── */
+.ttw { overflow-x:auto; border:1px solid var(--border); border-radius:10px; background:var(--surface); margin-bottom:18px; }
+table { width:100%; border-collapse:collapse; font-size:12px; }
+thead th { font-size:10px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-3); padding:10px 13px; text-align:left; background:var(--ne-100); border-bottom:1px solid var(--border); }
+tbody tr { border-bottom:1px solid var(--ne-100); }
+tbody tr:last-child { border-bottom:none; }
+tbody tr:hover { background:var(--bg); }
+td { padding:8px 13px; vertical-align:middle; }
+td.tn { font-family:'SF Mono','Fira Code',monospace; font-size:11px; white-space:nowrap; }
+td.tv { font-family:'SF Mono','Fira Code',monospace; font-size:11px; color:var(--ne-600); }
+td.td { font-size:12px; color:var(--text-2); }
+
+/* ── SPACING VISUAL ── */
+.spv { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:22px 22px 18px; margin-bottom:18px; display:flex; align-items:flex-end; gap:9px; flex-wrap:wrap; }
+.spi { display:flex; flex-direction:column; align-items:center; gap:6px; }
+.spbar { width:24px; border-radius:3px; }
+.spn { font-size:10px; font-family:monospace; text-align:center; }
+.spv2 { font-size:10px; color:var(--text-3); text-align:center; }
+
+/* ── RADIUS VISUAL ── */
+.rrv { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:22px; margin-bottom:18px; display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end; }
+.rri { display:flex; flex-direction:column; align-items:center; gap:8px; }
+.rrbox { width:48px; height:48px; }
+.rrlbl { font-size:10px; font-family:monospace; text-align:center; }
+.rrval { font-size:10px; color:var(--text-3); text-align:center; }
+
+/* ── TYPOGRAPHY ── */
+.tyv { background:var(--surface); border:1px solid var(--border); border-radius:10px; overflow:hidden; margin-bottom:18px; }
+.tytabs { display:flex; border-bottom:1px solid var(--border); background:var(--ne-100); padding:0 16px; }
+.tytab { font-size:11px; font-weight:600; padding:9px 13px; cursor:pointer; border-bottom:2px solid transparent; color:var(--text-3); transition:all 0.13s; margin-bottom:-1px; }
+.tytab.active { border-bottom-color:currentColor; }
+.typanel { display:none; padding:18px; }
+.typanel.active { display:block; }
+.tyrow { display:grid; grid-template-columns:100px 52px 80px 62px 72px 1fr; gap:8px; align-items:center; padding:9px 0; border-bottom:1px solid var(--ne-100); font-size:12px; }
+.tyrow:last-child { border-bottom:none; }
+.tyhdr { font-size:10px; font-weight:700; letter-spacing:0.07em; text-transform:uppercase; color:var(--text-3); display:grid; grid-template-columns:100px 52px 80px 62px 72px 1fr; gap:8px; padding:0 0 8px; border-bottom:1px solid var(--border); }
+.tytok { font-family:'SF Mono','Fira Code',monospace; font-size:10px; }
+.tywt { font-size:11px; font-weight:600; padding:2px 6px; border-radius:4px; display:inline-block; text-align:center; }
+.tw-b { background:#e8e3ff; color:var(--ci-700); }
+.tw-m { background:var(--pr-100); color:var(--pr-700); }
+.tw-r { background:var(--ne-100); color:var(--ne-600); }
+.tyuse { font-size:11px; color:var(--text-3); }
+
+/* ── INFO CALLOUT ── */
+.ic { border-radius:10px; padding:22px 24px; display:flex; align-items:flex-start; gap:14px; margin-bottom:18px; }
+.icicon { width:38px; height:38px; border-radius:9px; display:grid; place-items:center; flex-shrink:0; }
+
+/* ── ELEVATION DEMO ── */
+.elev-rows { display:flex; flex-direction:column; gap:8px; margin-bottom:24px; }
+.elev-row {
+  display:grid; grid-template-columns:56px 280px 1fr;
+  align-items:center; gap:20px;
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:10px; padding:16px 20px;
+}
+.elev-row-preview {
+  width:56px; height:56px; border-radius:8px;
+  background:var(--surface); flex-shrink:0;
+}
+.elev-row-name {
+  font-size:13px; font-weight:600; color:var(--text-1);
+  margin-bottom:4px; display:flex; align-items:center; gap:6px;
+}
+.elev-direction {
+  font-size:11px; font-weight:500; color:var(--text-3);
+}
+.elev-row-code {
+  font-family:'SF Mono','Fira Code',monospace; font-size:10px;
+  color:var(--text-3); line-height:1.5;
+}
+.elev-row-chips { display:flex; flex-wrap:wrap; gap:6px; }
+.elev-chip {
+  font-size:11px; font-weight:500; color:var(--text-2);
+  background:var(--ne-100); border:1px solid var(--border);
+  padding:3px 9px; border-radius:999px;
+}
+
+/* ── FOOTER ── */
+.ft-wrap { padding: 0 64px 0 64px; }
+.ft { border-top:1px solid var(--border); padding:26px 0; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.ftxt { font-size:11px; color:var(--text-3); }
+.fpills { display:flex; gap:6px; }
+.fpill { font-size:10px; font-weight:600; padding:3px 9px; border-radius:999px; background:var(--ne-100); color:var(--text-3); border:1px solid var(--border); }
+
+/* ── SEMANTIC TOKEN PAGE ── */
+.st-page { display:none; padding:56px 64px 120px; }
+.st-page.active { display:block; }
+.st-header { margin-bottom:32px; padding-bottom:32px; border-bottom:1px solid var(--border); }
+.st-title { font-size:32px; font-weight:700; letter-spacing:-0.025em; color:var(--ne-900); margin-bottom:10px; }
+.st-desc { font-size:14px; color:var(--text-2); line-height:1.65; max-width:560px; }
+.st-panel-tabs { display:flex; gap:8px; margin-top:20px; }
+.st-ptab {
+  display:flex; align-items:center; gap:6px;
+  font-size:12px; font-weight:600; padding:5px 12px;
+  border-radius:999px; border:1.5px solid; cursor:pointer;
+  transition:all 0.13s;
+}
+.st-ptab.active-ci { background:var(--ci-100); color:var(--ci-700); border-color:var(--ci-300); }
+.st-ptab.active-vb { background:var(--vb-100); color:var(--vb-700); border-color:var(--vb-300); }
+.st-ptab:not(.active-ci):not(.active-vb) { background:var(--ne-100); color:var(--text-3); border-color:var(--border); }
+.st-ptab-dot { width:7px; height:7px; border-radius:999px; }
+
+.st-prop-tabs { display:flex; gap:0; border-bottom:1px solid var(--border); margin-bottom:28px; }
+.st-prop-tab {
+  font-size:12px; font-weight:500; padding:10px 16px; cursor:pointer;
+  border-bottom:2px solid transparent; color:var(--text-3);
+  transition:all 0.13s; margin-bottom:-1px;
+}
+.st-prop-tab:hover { color:var(--text-2); }
+.st-prop-tab.active { color:var(--ci-600); border-bottom-color:var(--ci-600); font-weight:600; }
+.st-prop-tab.active.vb { color:var(--vb-600); border-bottom-color:var(--vb-600); }
+
+.st-panel { display:none; }
+.st-panel.active { display:block; }
+
+.st-group-label {
+  font-size:10px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;
+  color:var(--text-3); margin:24px 0 8px;
+}
+.st-group-label:first-child { margin-top:0; }
+
+.st-group-row td { padding:16px 13px 4px; }
+.st-group-label {
+  font-size:10px; font-weight:700; letter-spacing:0.08em;
+  text-transform:uppercase; color:var(--text-3);
+}
+.swatch-dot {
+  width:16px; height:16px; border-radius:4px; flex-shrink:0;
+  border:1px solid rgba(0,0,0,0.07); display:inline-block;
+  vertical-align:middle; margin-right:6px;
+}
+
+@media(max-width:900px){
+  nav { padding:0 20px; }
+  .page-body { grid-template-columns:1fr; }
+  .sidebar { display:none; }
+  .hero { grid-template-columns:1fr; padding:40px 20px; gap:28px; }
+  .hero-h1 { font-size:32px; } .hv { display:none; }
+  .section-wrap, .ft-wrap { padding:0 20px; }
+  .tyrow,.tyhdr { grid-template-columns:90px 44px 72px 54px 1fr; }
+  .tyrow>*:nth-child(5),.tyhdr>*:nth-child(5) { display:none; }
+  .ft { flex-direction:column; align-items:flex-start; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-left">
+    <div class="nav-logo">
+      <svg viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="5" height="5" rx="1" fill="white" fill-opacity=".9"/><rect x="8" y="1" width="5" height="5" rx="1" fill="white" fill-opacity=".5"/><rect x="1" y="8" width="5" height="5" rx="1" fill="white" fill-opacity=".5"/><rect x="8" y="8" width="5" height="5" rx="1" fill="white" fill-opacity=".9"/></svg>
+    </div>
+    <span class="nav-name">Web Design System <span>/ Foundations</span></span>
+  </div>
+  <span class="nav-v">v1 · 2025</span>
+</nav>
+
+<div class="page-body">
+
+<!-- ── SIDEBAR ── -->
+<aside class="sidebar">
+  <p class="sb-section-label">Foundations</p>
+  <ul class="sb-nav">
+    <li>
+      <a href="#hero" id="sbnav-supplier">
+        <span class="sb-dot" style="background:var(--ci-600)"></span>Supplier Panel
+      </a>
+      <ul class="sb-sub">
+        <li><a href="#s-color">Color</a></li>
+        <li><a href="#s-spacing">Spacing</a></li>
+        <li><a href="#s-radius">Border Radius</a></li>
+        <li><a href="#s-type">Typography</a></li>
+        <li><a href="#s-elevation">Elevation</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#valmo" id="sbnav-valmo">
+        <span class="sb-dot" style="background:var(--vb-500)"></span>Valmo Panel
+      </a>
+      <ul class="sb-sub">
+        <li><a href="#v-color">Color</a></li>
+        <li><a href="#v-shared">Shared foundations</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#semantic-tokens" id="sbnav-semantic">
+        <span class="sb-dot" style="background:var(--ne-400)"></span>Semantic Tokens
+      </a>
+      <ul class="sb-sub">
+        <li><a href="#st-bg-section">Background</a></li>
+        <li><a href="#st-surface-section">Surface</a></li>
+        <li><a href="#st-text-section">Text</a></li>
+        <li><a href="#st-border-section">Border</a></li>
+        <li><a href="#st-icon-section">Icon</a></li>
+        <li><a href="#st-spacing-section">Spacing</a></li>
+        <li><a href="#st-radius-section">Border Radius</a></li>
+        <li><a href="#st-elevation-section">Elevation</a></li>
+      </ul>
+    </li>
+  </ul>
+  <div class="sb-divider"></div>
+  <p class="sb-section-label">Components</p>
+  <div class="sb-coming-soon">Coming soon</div>
+</aside>
+
+<!-- ── MAIN ── -->
+<div class="main">
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div>
+    <p class="hero-eye">Meesho · Web Design System</p>
+    <h1 class="hero-h1">Foundations<br><em>for both panels</em></h1>
+    <p class="hero-p">A unified token architecture for Color, Spacing, Border Radius, and Typography — shared across Supplier Dashboard and Valmo Panel. Brand color is the only axis that differs.</p>
+    <div class="hero-panels">
+      <div class="ppill pci"><span class="ppill-dot"></span>Supplier Panel</div>
+      <div class="ppill pvb"><span class="ppill-dot"></span>Valmo Panel</div>
+    </div>
+    <div class="hero-stats">
+      <div class="hstat"><span class="hstat-val">4</span><span class="hstat-lbl">Foundations</span></div>
+      <div class="sdiv"></div>
+      <div class="hstat"><span class="hstat-val">8</span><span class="hstat-lbl">Color roles</span></div>
+      <div class="sdiv"></div>
+      <div class="hstat"><span class="hstat-val">11</span><span class="hstat-lbl">Spacing tokens</span></div>
+      <div class="sdiv"></div>
+      <div class="hstat"><span class="hstat-val">8</span><span class="hstat-lbl">Radius values</span></div>
+    </div>
+  </div>
+  <div class="hv">
+    <p class="hv-lbl">Brand colors — per panel</p>
+    <div class="dual">
+      <div>
+        <div class="bstrip-lbl" style="background:var(--ci-100);color:var(--ci-700)"><span style="background:var(--ci-600)"></span>Supplier · Crystal Indigo</div>
+        <div class="bswatches">
+          <div class="bs" style="background:var(--ci-100)"></div><div class="bs" style="background:var(--ci-200)"></div><div class="bs" style="background:var(--ci-300)"></div><div class="bs" style="background:var(--ci-400)"></div><div class="bs" style="background:var(--ci-500)"></div><div class="bs" style="background:var(--ci-600)"></div><div class="bs" style="background:var(--ci-700)"></div><div class="bs" style="background:var(--ci-800)"></div><div class="bs" style="background:var(--ci-900)"></div>
+        </div>
+      </div>
+      <div>
+        <div class="bstrip-lbl" style="background:var(--vb-100);color:var(--vb-700)"><span style="background:var(--vb-500)"></span>Valmo · Valmo Blue</div>
+        <div class="bswatches">
+          <div class="bs" style="background:var(--vb-100)"></div><div class="bs" style="background:var(--vb-200)"></div><div class="bs" style="background:var(--vb-300)"></div><div class="bs" style="background:var(--vb-400)"></div><div class="bs" style="background:var(--vb-500)"></div><div class="bs" style="background:var(--vb-600)"></div><div class="bs" style="background:var(--vb-700)"></div><div class="bs" style="background:var(--vb-800)"></div><div class="bs" style="background:var(--vb-900)"></div>
+        </div>
+      </div>
+    </div>
+    <div class="hv-div"></div>
+    <p class="hv-lbl">Shared palettes</p>
+    <div class="shared-grid">
+      <div class="sc"><div class="ss" style="background:var(--su-500)"></div><div class="ss" style="background:var(--su-300)"></div><div class="ss" style="background:var(--su-100)"></div><p class="slbl">Success</p></div>
+      <div class="sc"><div class="ss" style="background:var(--da-500)"></div><div class="ss" style="background:var(--da-300)"></div><div class="ss" style="background:var(--da-100)"></div><p class="slbl">Danger</p></div>
+      <div class="sc"><div class="ss" style="background:var(--wa-500)"></div><div class="ss" style="background:var(--wa-300)"></div><div class="ss" style="background:var(--wa-100)"></div><p class="slbl">Warning</p></div>
+      <div class="sc"><div class="ss" style="background:var(--ne-600)"></div><div class="ss" style="background:var(--ne-300)"></div><div class="ss" style="background:var(--ne-100)"></div><p class="slbl">Neutral</p></div>
+      <div class="sc"><div class="ss" style="background:var(--pr-500)"></div><div class="ss" style="background:var(--pr-300)"></div><div class="ss" style="background:var(--pr-100)"></div><p class="slbl">Progress</p></div>
+      <div class="sc"><div class="ss" style="background:var(--di-500)"></div><div class="ss" style="background:var(--di-300)"></div><div class="ss" style="background:var(--di-100)"></div><p class="slbl">Discovery</p></div>
+    </div>
+    <div class="hv-div"></div>
+    <p class="hv-lbl">Spacing · 4px base</p>
+    <div class="sp-mini">
+      <div class="sp-bar" style="height:4px"></div><div class="sp-bar" style="height:8px"></div><div class="sp-bar" style="height:12px"></div><div class="sp-bar" style="height:16px"></div><div class="sp-bar" style="height:24px"></div><div class="sp-bar" style="height:32px"></div><div class="sp-bar" style="height:40px"></div><div class="sp-bar" style="height:48px"></div>
+    </div>
+    <div class="rr-mini">
+      <div class="rr-b" style="border-radius:0px"></div><div class="rr-b" style="border-radius:2px"></div><div class="rr-b" style="border-radius:4px"></div><div class="rr-b" style="border-radius:6px"></div><div class="rr-b" style="border-radius:8px"></div><div class="rr-b" style="border-radius:12px"></div><div class="rr-b" style="border-radius:16px"></div><div class="rr-b" style="border-radius:999px;width:48px;height:22px;"></div>
+    </div>
+  </div>
+</section>
+
+<div class="section-wrap">
+<!-- ══ SUPPLIER ══ -->
+<div id="supplier">
+  <div class="panel-div">
+    <div class="plrow"><div class="pldot" style="background:var(--ci-600)"></div><span class="pltag" style="color:var(--ci-600)">Supplier Panel</span></div>
+    <h2 class="ph2">Supplier Dashboard</h2>
+    <p class="pdesc">B2B dashboard for sellers managing listings, orders, payments, and logistics. Brand: Crystal Indigo.</p>
+  </div>
+
+  <!-- COLOR -->
+  <div class="fsec" id="s-color">
+    <div class="fhdr"><span class="fnum">01</span><div class="ftb">
+      <span class="ftag" style="color:var(--ci-600);background:var(--ci-100);border-color:var(--ci-200)">Foundation</span>
+      <h3 class="fh3">Color</h3>
+      <p class="fdesc">8 color roles on a 9-step scale. Two-tier architecture: primitives hold raw hex values; semantics hold role-based aliases organised by property.</p>
+    </div></div>
+    <div class="rg">
+      <div class="rc"><div class="rchip" style="background:var(--ci-600)">Brand</div><p class="rdesc">Primary actions and elements communicating the Supplier panel identity</p></div>
+      <div class="rc"><div class="rchip" style="background:var(--su-500)">Success</div><p class="rdesc">Favourable outcomes, positive feedback, success messages</p></div>
+      <div class="rc"><div class="rchip" style="background:var(--da-500)">Danger</div><p class="rdesc">Danger, serious error states, destructive actions</p></div>
+      <div class="rc"><div class="rchip" style="background:var(--wa-500)">Warning</div><p class="rdesc">Caution — preventing mistakes or errors before they occur</p></div>
+      <div class="rc"><div class="rchip" style="background:var(--ne-500)">Neutrals</div><p class="rdesc">Default text, secondary UI, navigation, dividers</p></div>
+      <div class="rc"><div class="rchip" style="background:var(--pr-600)">Progress</div><p class="rdesc">Progress indicators, gradient states, in-flight steps</p></div>
+      <div class="rc"><div class="rchip" style="background:var(--di-500)">Discovery</div><p class="rdesc">New features, onboarding, discovery moments</p></div>
+    </div>
+    <div class="pg">
+      <div class="pc"><div class="pswatches"><div class="psw" style="background:var(--ci-100)"></div><div class="psw" style="background:var(--ci-200)"></div><div class="psw" style="background:var(--ci-300)"></div><div class="psw" style="background:var(--ci-400)"></div><div class="psw" style="background:var(--ci-500)"></div><div class="psw" style="background:var(--ci-600)"></div><div class="psw" style="background:var(--ci-700)"></div><div class="psw" style="background:var(--ci-800)"></div><div class="psw" style="background:var(--ci-900)"></div></div><div class="pinfo"><span class="pname">Crystal Indigo</span><span class="psteps">100–900</span></div></div>
+      <div class="pc"><div class="pswatches"><div class="psw" style="background:var(--su-100)"></div><div class="psw" style="background:var(--su-200)"></div><div class="psw" style="background:var(--su-300)"></div><div class="psw" style="background:var(--su-400)"></div><div class="psw" style="background:var(--su-500)"></div><div class="psw" style="background:var(--su-600)"></div><div class="psw" style="background:var(--su-700)"></div><div class="psw" style="background:var(--su-800)"></div><div class="psw" style="background:var(--su-900)"></div></div><div class="pinfo"><span class="pname">Success</span><span class="psteps">100–900</span></div></div>
+      <div class="pc"><div class="pswatches"><div class="psw" style="background:var(--da-100)"></div><div class="psw" style="background:var(--da-200)"></div><div class="psw" style="background:var(--da-300)"></div><div class="psw" style="background:var(--da-400)"></div><div class="psw" style="background:var(--da-500)"></div><div class="psw" style="background:var(--da-600)"></div><div class="psw" style="background:var(--da-700)"></div><div class="psw" style="background:var(--da-800)"></div><div class="psw" style="background:var(--da-900)"></div></div><div class="pinfo"><span class="pname">Danger</span><span class="psteps">100–900</span></div></div>
+      <div class="pc"><div class="pswatches"><div class="psw" style="background:var(--wa-100)"></div><div class="psw" style="background:var(--wa-200)"></div><div class="psw" style="background:var(--wa-300)"></div><div class="psw" style="background:var(--wa-400)"></div><div class="psw" style="background:var(--wa-500)"></div><div class="psw" style="background:var(--wa-600)"></div><div class="psw" style="background:var(--wa-700)"></div><div class="psw" style="background:var(--wa-800)"></div><div class="psw" style="background:var(--wa-900)"></div></div><div class="pinfo"><span class="pname">Warning</span><span class="psteps">100–900</span></div></div>
+      <div class="pc"><div class="pswatches"><div class="psw" style="background:var(--ne-100)"></div><div class="psw" style="background:var(--ne-200)"></div><div class="psw" style="background:var(--ne-300)"></div><div class="psw" style="background:var(--ne-400)"></div><div class="psw" style="background:var(--ne-500)"></div><div class="psw" style="background:var(--ne-600)"></div><div class="psw" style="background:var(--ne-700)"></div><div class="psw" style="background:var(--ne-800)"></div><div class="psw" style="background:var(--ne-900)"></div></div><div class="pinfo"><span class="pname">Neutral</span><span class="psteps">100–900</span></div></div>
+      <div class="pc"><div class="pswatches"><div class="psw" style="background:var(--pr-100)"></div><div class="psw" style="background:var(--pr-200)"></div><div class="psw" style="background:var(--pr-300)"></div><div class="psw" style="background:var(--pr-400)"></div><div class="psw" style="background:var(--pr-500)"></div><div class="psw" style="background:var(--pr-600)"></div><div class="psw" style="background:var(--pr-700)"></div><div class="psw" style="background:var(--pr-800)"></div><div class="psw" style="background:var(--pr-900)"></div></div><div class="pinfo"><span class="pname">Progress</span><span class="psteps">100–900</span></div></div>
+      <div class="pc"><div class="pswatches"><div class="psw" style="background:var(--di-100)"></div><div class="psw" style="background:var(--di-200)"></div><div class="psw" style="background:var(--di-300)"></div><div class="psw" style="background:var(--di-400)"></div><div class="psw" style="background:var(--di-500)"></div><div class="psw" style="background:var(--di-600)"></div><div class="psw" style="background:var(--di-700)"></div><div class="psw" style="background:var(--di-800)"></div><div class="psw" style="background:var(--di-900)"></div></div><div class="pinfo"><span class="pname">Discovery</span><span class="psteps">100–900</span></div></div>
+    </div>
+    <div class="dbox" style="border-left:3px solid var(--ci-500)">
+      <p class="dtitle" style="color:var(--ci-600)">Key design decision</p>
+      <p class="dbody">Primitives encode raw values (e.g. <code>Crystal Indigo/600 = #4c31b9</code>). Semantics encode role-based aliases by property — bg / text / border / icon / focus / overlay. Disabled states always map to Neutral/200 (<code>#d6d6db</code>). On-base text always maps to White.</p>
+    </div>
+  </div>
+
+  <!-- SPACING -->
+  <div class="fsec" id="s-spacing">
+    <div class="fhdr"><span class="fnum">02</span><div class="ftb">
+      <span class="ftag" style="color:var(--ci-600);background:var(--ci-100);border-color:var(--ci-200)">Foundation</span>
+      <h3 class="fh3">Spacing</h3>
+      <p class="fdesc">11 primitive tokens named by pixel value. Semantic tokens for padding, gap, and margin. MWeb handled via Figma Variable modes — no separate token set needed.</p>
+    </div></div>
+    <div class="spv">
+      <div class="spi"><div class="spbar" style="height:2px;background:var(--ci-100);border:1.5px solid var(--ci-300)"></div><span class="spn" style="color:var(--ci-700)">space-2</span><span class="spv2">2px</span></div>
+      <div class="spi"><div class="spbar" style="height:4px;background:var(--ci-100);border:1.5px solid var(--ci-300)"></div><span class="spn" style="color:var(--ci-700)">space-4</span><span class="spv2">4px</span></div>
+      <div class="spi"><div class="spbar" style="height:8px;background:var(--ci-100);border:1.5px solid var(--ci-300)"></div><span class="spn" style="color:var(--ci-700)">space-8</span><span class="spv2">8px</span></div>
+      <div class="spi"><div class="spbar" style="height:12px;background:var(--ci-100);border:1.5px solid var(--ci-300)"></div><span class="spn" style="color:var(--ci-700)">space-12</span><span class="spv2">12px</span></div>
+      <div class="spi"><div class="spbar" style="height:16px;background:var(--ci-100);border:1.5px solid var(--ci-300)"></div><span class="spn" style="color:var(--ci-700)">space-16</span><span class="spv2">16px</span></div>
+      <div class="spi"><div class="spbar" style="height:24px;background:var(--ci-100);border:1.5px solid var(--ci-300)"></div><span class="spn" style="color:var(--ci-700)">space-24</span><span class="spv2">24px</span></div>
+      <div class="spi"><div class="spbar" style="height:32px;background:var(--ci-100);border:1.5px solid var(--ci-300)"></div><span class="spn" style="color:var(--ci-700)">space-32</span><span class="spv2">32px</span></div>
+      <div class="spi"><div class="spbar" style="height:40px;background:var(--ci-100);border:1.5px solid var(--ci-300)"></div><span class="spn" style="color:var(--ci-700)">space-40</span><span class="spv2">40px</span></div>
+      <div class="spi"><div class="spbar" style="height:48px;background:var(--ci-100);border:1.5px solid var(--ci-300)"></div><span class="spn" style="color:var(--ci-700)">space-48</span><span class="spv2">48px</span></div>
+      <div class="spi"><div class="spbar" style="height:64px;background:var(--ci-100);border:1.5px solid var(--ci-300)"></div><span class="spn" style="color:var(--ci-700)">space-64</span><span class="spv2">64px</span></div>
+      <div class="spi"><div class="spbar" style="height:80px;background:var(--ci-100);border:1.5px solid var(--ci-300)"></div><span class="spn" style="color:var(--ci-700)">space-80</span><span class="spv2">80px</span></div>
+    </div>
+    <div class="dbox" style="border-left:3px solid var(--ci-500)">
+      <p class="dtitle" style="color:var(--ci-600)">Key design decision</p>
+      <p class="dbody">Primitives named by value (<code>space-8</code> = 8px). MWeb platform mode steps every semantic token down one size. Touch targets step up. Both handled via Figma Variable modes.</p>
+    </div>
+  </div>
+
+  <!-- BORDER RADIUS -->
+  <div class="fsec" id="s-radius">
+    <div class="fhdr"><span class="fnum">03</span><div class="ftb">
+      <span class="ftag" style="color:var(--ci-600);background:var(--ci-100);border-color:var(--ci-200)">Foundation</span>
+      <h3 class="fh3">Border Radius</h3>
+      <p class="fdesc">8 values mapped to semantic component roles. Three-tier hierarchy: labels/indicators (4px) → interactive controls (6px) → containers (8–16px).</p>
+    </div></div>
+    <div class="rrv">
+      <div class="rri"><div class="rrbox" style="border-radius:0;background:var(--ci-100);border:2px solid var(--ci-400)"></div><span class="rrlbl" style="color:var(--ci-700)">flush</span><span class="rrval">0px</span></div>
+      <div class="rri"><div class="rrbox" style="border-radius:2px;background:var(--ci-100);border:2px solid var(--ci-400)"></div><span class="rrlbl" style="color:var(--ci-700)">detail</span><span class="rrval">2px</span></div>
+      <div class="rri"><div class="rrbox" style="border-radius:4px;background:var(--ci-100);border:2px solid var(--ci-400)"></div><span class="rrlbl" style="color:var(--ci-700)">indicator</span><span class="rrval">4px</span></div>
+      <div class="rri"><div class="rrbox" style="border-radius:6px;background:var(--ci-100);border:2px solid var(--ci-400)"></div><span class="rrlbl" style="color:var(--ci-700)">control</span><span class="rrval">6px</span></div>
+      <div class="rri"><div class="rrbox" style="border-radius:8px;background:var(--ci-100);border:2px solid var(--ci-400)"></div><span class="rrlbl" style="color:var(--ci-700)">overlay</span><span class="rrval">8px</span></div>
+      <div class="rri"><div class="rrbox" style="border-radius:12px;background:var(--ci-100);border:2px solid var(--ci-400)"></div><span class="rrlbl" style="color:var(--ci-700)">surface</span><span class="rrval">12px</span></div>
+      <div class="rri"><div class="rrbox" style="border-radius:16px;background:var(--ci-100);border:2px solid var(--ci-400)"></div><span class="rrlbl" style="color:var(--ci-700)">modal</span><span class="rrval">16px</span></div>
+      <div class="rri"><div class="rrbox" style="border-radius:9999px;width:82px;height:34px;background:var(--ci-100);border:2px solid var(--ci-400)"></div><span class="rrlbl" style="color:var(--ci-700)">pill</span><span class="rrval">9999px</span></div>
+    </div>
+  </div>
+
+  <!-- TYPOGRAPHY -->
+  <div class="fsec" id="s-type">
+    <div class="fhdr"><span class="fnum">04</span><div class="ftb">
+      <span class="ftag" style="color:var(--ci-600);background:var(--ci-100);border-color:var(--ci-200)">Foundation</span>
+      <h3 class="fh3">Typography</h3>
+      <p class="fdesc">Font: <strong>DM Sans</strong> — Regular (400), Medium (560), Bold (700). Display is restricted to Landing Pages / First Call sections only. Body always stands alone.</p>
+    </div></div>
+    <div class="tyv" id="s-type-widget">
+      <div class="tytabs">
+        <div class="tytab active" style="color:var(--ci-600)" onclick="sw('s','d')">Desktop</div>
+        <div class="tytab" onclick="sw('s','m')" style="color:var(--text-3)">Mobile</div>
+      </div>
+      <div class="typanel active" id="s-d">
+        <div class="tyhdr"><span>Token</span><span>Size</span><span>Weight</span><span>Line Ht</span><span>Letter Sp</span><span>Use-cases</span></div>
+        <div class="tyrow"><span class="tytok" style="color:var(--ci-700)">display/large</span><span>32px</span><span><span class="tywt tw-b">Bold</span></span><span>40</span><span>−1</span><span class="tyuse">Landing Pages — First Call Section only</span></div>
+        <div class="tyrow"><span class="tytok" style="color:var(--ci-700)">headings/large</span><span>24px</span><span><span class="tywt tw-b">Bold</span></span><span>32</span><span>−0.5</span><span class="tyuse">Main Page Title</span></div>
+        <div class="tyrow"><span class="tytok" style="color:var(--ci-700)">headings/medium</span><span>20px</span><span><span class="tywt tw-b">Bold</span></span><span>28</span><span>−0.5</span><span class="tyuse">Card Headings, Section Headings</span></div>
+        <div class="tyrow"><span class="tytok" style="color:var(--ci-700)">headings/small</span><span>16px</span><span><span class="tywt tw-b">Bold</span></span><span>24</span><span>−0.5</span><span class="tyuse">Inside Card Headings</span></div>
+        <div class="tyrow"><span class="tytok" style="color:var(--ci-700)">body/xlarge</span><span>20px</span><span><span class="tywt tw-m">Medium</span></span><span>28</span><span>−0.5</span><span class="tyuse">Landing Page Subtitle</span></div>
+        <div class="tyrow"><span class="tytok" style="color:var(--ci-700)">body/xlarge</span><span>20px</span><span><span class="tywt tw-r">Regular</span></span><span>28</span><span>−0.5</span><span class="tyuse">Landing Page Pointers</span></div>
+        <div class="tyrow"><span class="tytok" style="color:var(--ci-700)">body/large</span><span>16px</span><span><span class="tywt tw-m">Medium</span></span><span>24</span><span>−0.5</span><span class="tyuse">P1 after Card Headings</span></div>
+        <div class="tyrow"><span class="tytok" style="color:var(--ci-700)">body/large</span><span>16px</span><span><span class="tywt tw-r">Regular</span></span><span>24</span><span>−0.5</span><span class="tyuse">Landing Pages Body Text</span></div>
+        <div class="tyrow"><span class="tytok" style="color:var(--ci-700)">body/medium</span><span>14px</span><span><span class="tywt tw-m">Medium</span></span><span>20</span><span>−0.1</span><span class="tyuse">2 levels hierarchy on Product Pages</span></div>
+        <div class="tyrow"><span class="tytok" style="color:var(--ci-700)">body/small</span><span>12px</span><span><span class="tywt tw-m">Medium</span></span><span>16</span><span>−0.1</span><span class="tyuse">Product Details — Tables</span></div>
+        <div class="tyrow"><span class="tytok" style="color:var(--ci-700)">body/small</span><span>12px</span><span><span class="tywt tw-r">Regular</span></span><span>16</span><span>−0.1</span><span class="tyuse">1 level hierarchy wherever required</span></div>
+        <div class="tyrow"><span class="tytok" style="color:var(--ci-700)">body/xsmall</span><span>11px</span><span><span class="tywt tw-r">Regular</span></span><span>16</span><span>0</span><span class="tyuse">Graphs, smallest info</span></div>
+      </div>
+      <div class="typanel" id="s-m">
+        <div class="tyhdr"><span>Token</span><span>Size</span><span>Weight</span><span>Line Ht</span><span>Letter Sp</span><span>Use-cases</span></div>
+        <div class="tyrow"><span class="tytok" style="color:var(--ci-700)">display/large</span><span>24px</span><span><span class="tywt tw-b">Bold</span></span><span>32</span><span>0</span><span class="tyuse">Banner Section Heading</span></div>
+        <div class="tyrow"><span class="tytok" style="color:var(--ci-700)">headings/large</span><span>20px</span><span><span class="tywt tw-b">Bold</span></span><span>28</span><span>0</span><span class="tyuse">Section Title</span></div>
+        <div class="tyrow"><span class="tytok" style="color:var(--ci-700)">headings/medium</span><span>16px</span><span><span class="tywt tw-b">Bold</span></span><span>24</span><span>0</span><span class="tyuse">Main Page Title, Primary Card Title</span></div>
+        <div class="tyrow"><span class="tytok" style="color:var(--ci-700)">body/large</span><span>16px</span><span><span class="tywt tw-m">Medium</span></span><span>24</span><span>0</span><span class="tyuse">Landing Pages Body Text</span></div>
+        <div class="tyrow"><span class="tytok" style="color:var(--ci-700)">body/large</span><span>16px</span><span><span class="tywt tw-r">Regular</span></span><span>24</span><span>0</span><span class="tyuse">Body Text</span></div>
+        <div class="tyrow"><span class="tytok" style="color:var(--ci-700)">body/medium</span><span>14px</span><span><span class="tywt tw-b">Bold</span></span><span>20</span><span>0</span><span class="tyuse">Body Text</span></div>
+        <div class="tyrow"><span class="tytok" style="color:var(--ci-700)">body/medium</span><span>14px</span><span><span class="tywt tw-m">Medium</span></span><span>20</span><span>0</span><span class="tyuse">Category names</span></div>
+        <div class="tyrow"><span class="tytok" style="color:var(--ci-700)">body/small</span><span>12px</span><span><span class="tywt tw-m">Medium</span></span><span>20</span><span>0</span><span class="tyuse">Size, Qty, Supplier, Placeholder in Review order</span></div>
+        <div class="tyrow"><span class="tytok" style="color:var(--ci-700)">body/small</span><span>12px</span><span><span class="tywt tw-r">Regular</span></span><span>20</span><span>0</span><span class="tyuse">Customer name in reviews, Lowest price</span></div>
+        <div class="tyrow"><span class="tytok" style="color:var(--ci-700)">body/small</span><span>12px</span><span><span class="tywt tw-b">Bold</span></span><span>20</span><span>0</span><span class="tyuse">Use-case to be mapped</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ELEVATION -->
+  <div class="fsec" id="s-elevation">
+    <div class="fhdr"><span class="fnum">05</span><div class="ftb">
+      <span class="ftag" style="color:var(--ci-600);background:var(--ci-100);border-color:var(--ci-200)">Foundation</span>
+      <h3 class="fh3">Elevation</h3>
+      <p class="fdesc">Three elevation levels — Low, Mid, and High Raised — each using a pair of layered shadows. All use the same colour (<code style="font-family:monospace;font-size:11px;background:var(--ne-100);padding:1px 4px;border-radius:3px">#1C1C22 at 16%</code>) with varying blur and spread to create depth.</p>
+    </div></div>
+
+    <!-- Live demos -->
+    <div class="elev-rows">
+
+      <div class="elev-row">
+        <div class="elev-row-preview" style="box-shadow:0 2px 6px 0 rgba(28,28,34,0.16), 0 0 2px 0 rgba(28,28,34,0.16)"></div>
+        <div class="elev-row-meta">
+          <p class="elev-row-name">Low Raised <span class="elev-direction">↑ top</span></p>
+          <p class="elev-row-code">0 2px 6px 0 rgba(28,28,34,0.16) · 0 0 2px 0 rgba(28,28,34,0.16)</p>
+        </div>
+        <div class="elev-row-chips">
+          <span class="elev-chip">Headers (in scroll)</span>
+          <span class="elev-chip">Switch</span>
+          <span class="elev-chip">Sliders</span>
+        </div>
+      </div>
+
+      <div class="elev-row">
+        <div class="elev-row-preview" style="box-shadow:0 -2px 6px 0 rgba(28,28,34,0.16), 0 0 2px 0 rgba(28,28,34,0.16)"></div>
+        <div class="elev-row-meta">
+          <p class="elev-row-name">Low Raised <span class="elev-direction">↓ bottom</span></p>
+          <p class="elev-row-code">0 -2px 6px 0 rgba(28,28,34,0.16) · 0 0 2px 0 rgba(28,28,34,0.16)</p>
+        </div>
+        <div class="elev-row-chips">
+          <span class="elev-chip">Footers</span>
+        </div>
+      </div>
+
+      <div class="elev-row">
+        <div class="elev-row-preview" style="box-shadow:0 4px 12px 0 rgba(28,28,34,0.16), 0 0 2px 0 rgba(28,28,34,0.16)"></div>
+        <div class="elev-row-meta">
+          <p class="elev-row-name">Mid Raised</p>
+          <p class="elev-row-code">0 4px 12px 0 rgba(28,28,34,0.16) · 0 0 2px 0 rgba(28,28,34,0.16)</p>
+        </div>
+        <div class="elev-row-chips">
+          <span class="elev-chip">Dropdown</span>
+          <span class="elev-chip">Filters</span>
+          <span class="elev-chip">Date picker</span>
+          <span class="elev-chip">Time picker</span>
+          <span class="elev-chip">Selector</span>
+          <span class="elev-chip">File drop box</span>
+          <span class="elev-chip">Toasts</span>
+          <span class="elev-chip">Notifications</span>
+        </div>
+      </div>
+
+      <div class="elev-row">
+        <div class="elev-row-preview" style="box-shadow:0 4px 20px 2px rgba(28,28,34,0.16), 0 0 2px 0 rgba(28,28,34,0.16)"></div>
+        <div class="elev-row-meta">
+          <p class="elev-row-name">High Raised</p>
+          <p class="elev-row-code">0 4px 20px 2px rgba(28,28,34,0.16) · 0 0 2px 0 rgba(28,28,34,0.16)</p>
+        </div>
+        <div class="elev-row-chips">
+          <span class="elev-chip">Modals</span>
+          <span class="elev-chip">Popups</span>
+          <span class="elev-chip">Coachmarks</span>
+          <span class="elev-chip">Tooltips</span>
+          <span class="elev-chip">Map tooltips</span>
+          <span class="elev-chip">Side drawers</span>
+          <span class="elev-chip">Bottom sheets</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══ VALMO ══ -->
+<div id="valmo">
+  <div class="panel-div">
+    <div class="plrow"><div class="pldot" style="background:var(--vb-500)"></div><span class="pltag" style="color:var(--vb-600)">Valmo Panel</span></div>
+    <h2 class="ph2">Valmo Dashboard</h2>
+    <p class="pdesc">All foundations identical to Supplier. The single differentiator is brand color: Valmo Blue. One Figma Variable mode swap — only brand/* primitives resolve differently.</p>
+  </div>
+
+  <div class="fsec" id="v-color">
+    <div class="fhdr"><span class="fnum">01</span><div class="ftb">
+      <span class="ftag" style="color:var(--vb-600);background:var(--vb-100);border-color:var(--vb-200)">Foundation</span>
+      <h3 class="fh3">Color — Brand only differs</h3>
+      <p class="fdesc">Valmo Blue replaces Crystal Indigo. All semantic token names are unchanged — only the brand/* primitive resolves to a different hex.</p>
+    </div></div>
+    <div class="pg">
+      <div class="pc"><div class="pswatches"><div class="psw" style="background:var(--vb-100)"></div><div class="psw" style="background:var(--vb-200)"></div><div class="psw" style="background:var(--vb-300)"></div><div class="psw" style="background:var(--vb-400)"></div><div class="psw" style="background:var(--vb-500)"></div><div class="psw" style="background:var(--vb-600)"></div><div class="psw" style="background:var(--vb-700)"></div><div class="psw" style="background:var(--vb-800)"></div><div class="psw" style="background:var(--vb-900)"></div></div><div class="pinfo"><span class="pname">Valmo Blue ✦ changed</span><span class="psteps">100–900</span></div></div>
+      <div class="pc" style="opacity:0.45;border-style:dashed"><div class="pswatches"><div class="psw" style="background:var(--su-100)"></div><div class="psw" style="background:var(--su-200)"></div><div class="psw" style="background:var(--su-300)"></div><div class="psw" style="background:var(--su-400)"></div><div class="psw" style="background:var(--su-500)"></div><div class="psw" style="background:var(--su-600)"></div><div class="psw" style="background:var(--su-700)"></div><div class="psw" style="background:var(--su-800)"></div><div class="psw" style="background:var(--su-900)"></div></div><div class="pinfo"><span class="pname">Success — shared</span><span class="psteps">unchanged</span></div></div>
+      <div class="pc" style="opacity:0.45;border-style:dashed"><div class="pswatches"><div class="psw" style="background:var(--da-100)"></div><div class="psw" style="background:var(--da-200)"></div><div class="psw" style="background:var(--da-300)"></div><div class="psw" style="background:var(--da-400)"></div><div class="psw" style="background:var(--da-500)"></div><div class="psw" style="background:var(--da-600)"></div><div class="psw" style="background:var(--da-700)"></div><div class="psw" style="background:var(--da-800)"></div><div class="psw" style="background:var(--da-900)"></div></div><div class="pinfo"><span class="pname">Danger — shared</span><span class="psteps">unchanged</span></div></div>
+      <div class="pc" style="opacity:0.45;border-style:dashed"><div class="pswatches"><div class="psw" style="background:var(--ne-100)"></div><div class="psw" style="background:var(--ne-200)"></div><div class="psw" style="background:var(--ne-300)"></div><div class="psw" style="background:var(--ne-400)"></div><div class="psw" style="background:var(--ne-500)"></div><div class="psw" style="background:var(--ne-600)"></div><div class="psw" style="background:var(--ne-700)"></div><div class="psw" style="background:var(--ne-800)"></div><div class="psw" style="background:var(--ne-900)"></div></div><div class="pinfo"><span class="pname">Neutral — shared</span><span class="psteps">unchanged</span></div></div>
+    </div>
+    <div class="dbox" style="border-left:3px solid var(--vb-500)">
+      <p class="dtitle" style="color:var(--vb-600)">Brand token diff</p>
+      <p class="dbody">Solid palette = new. Dashed palettes = shared with Supplier, unchanged.</p>
+    </div>
+  </div>
+
+  <div class="fsec" id="v-shared">
+    <div class="ic" style="background:var(--vb-100);border:1px solid var(--vb-200)">
+      <div class="icicon" style="background:var(--vb-500)">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 1.5a7.5 7.5 0 100 15A7.5 7.5 0 009 1.5zm.75 10.5h-1.5V8.25h1.5V12zm0-5.25h-1.5v-1.5h1.5v1.5z" fill="white"/></svg>
+      </div>
+      <div>
+        <p style="font-size:13px;font-weight:700;color:var(--vb-800);margin-bottom:3px;">Spacing, Border Radius, Typography &amp; Elevation — identical to Supplier Panel</p>
+        <p style="font-size:12px;color:var(--vb-700);line-height:1.6;">Foundations 02–05 share the same token values, scales, and semantic names. See the Supplier Panel section above for full documentation.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /section-wrap -->
+
+
+<!-- ══ SEMANTIC TOKENS ══ -->
+<div class="section-wrap" id="semantic-tokens">
+  <div class="panel-div" style="padding-top:64px;margin-bottom:40px">
+    <div class="plrow"><div class="pldot" style="background:var(--ne-500)"></div><span class="pltag" style="color:var(--ne-600)">Shared · All Panels</span></div>
+    <h2 class="ph2">Semantic Tokens</h2>
+    <p class="pdesc">Role-based color aliases organised by property — not component. Designers use these in Figma; developers reference them in code. Only brand/* tokens differ between panels.</p>
+    <div class="hero-panels" style="margin-top:16px;margin-bottom:0">
+      <div class="ppill pci"><span class="ppill-dot"></span>Supplier · Crystal Indigo</div>
+      <div class="ppill pvb"><span class="ppill-dot"></span>Valmo · swap brand/* only</div>
+    </div>
+  </div>
+
+  <div class="fsec" id="st-bg-section">
+    <div class="fhdr"><span class="fnum" style="color:var(--ne-400)">bg</span><div class="ftb">
+      <h3 class="fh3">Background</h3>
+      <p class="fdesc">Page and component backgrounds. Light tints signal semantic meaning without high contrast.</p>
+    </div></div>
+    <div class="ttw"><table>
+      <thead><tr><th>Token</th><th>Primitive</th><th>Hex</th><th>Usage</th></tr></thead>
+      <tbody>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Background/Crystal/light</td><td class="tv">Crystal Indigo/100</td><td class="tv"><span class="swatch-dot" style="background:#eeeaff"></span>#eeeaff</td><td class="td">Tinted brand background, selected row fill</td></tr>
+        <tr><td class="tn" style="color:var(--vb-700)">Color/Background/Valmo/light</td><td class="tv">Valmo Blue/100</td><td class="tv"><span class="swatch-dot" style="background:#e8f2ff"></span>#e8f2ff</td><td class="td">Tinted Valmo brand background (Valmo panel)</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Background/Neutral/page</td><td class="tv">Neutral/100</td><td class="tv"><span class="swatch-dot" style="background:#f4f4f5"></span>#f4f4f5</td><td class="td">Page-level background</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Background/Neutral/base</td><td class="tv">White</td><td class="tv"><span class="swatch-dot" style="background:#ffffff;border:1px solid #e8e8ed"></span>#ffffff</td><td class="td">Card and panel backgrounds</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Background/Success/light</td><td class="tv">Success/100</td><td class="tv"><span class="swatch-dot" style="background:#e5f5e8"></span>#e5f5e8</td><td class="td">Success state backgrounds</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Background/Danger/light</td><td class="tv">Danger/100</td><td class="tv"><span class="swatch-dot" style="background:#f8e8e7"></span>#f8e8e7</td><td class="td">Error state backgrounds</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Background/Warning/light</td><td class="tv">Warning/100</td><td class="tv"><span class="swatch-dot" style="background:#ffebdc"></span>#ffebdc</td><td class="td">Caution state backgrounds</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Background/Progress/light</td><td class="tv">Progress/100</td><td class="tv"><span class="swatch-dot" style="background:#faf4e0"></span>#faf4e0</td><td class="td">Progress and in-flight backgrounds</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Background/Discovery/light</td><td class="tv">Discovery/100</td><td class="tv"><span class="swatch-dot" style="background:#f7e4f0"></span>#f7e4f0</td><td class="td">New feature and onboarding highlights</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="fsec" id="st-surface-section">
+    <div class="fhdr"><span class="fnum" style="color:var(--ne-400)">surface</span><div class="ftb">
+      <h3 class="fh3">Surface</h3>
+      <p class="fdesc">Filled surfaces for interactive components, including hover, pressed, and disabled states.</p>
+    </div></div>
+    <div class="ttw"><table>
+      <thead><tr><th>Token</th><th>Primitive</th><th>Hex</th><th>Usage</th></tr></thead>
+      <tbody>
+        <tr><td colspan="4" class="st-group-label">Brand — Crystal Indigo (Valmo Blue for Valmo panel)</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Surface/Crystal/base</td><td class="tv">Crystal Indigo/600</td><td class="tv"><span class="swatch-dot" style="background:#4c31b9"></span>#4c31b9</td><td class="td">Primary button fill, CTA backgrounds</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Surface/Crystal/light</td><td class="tv">Crystal Indigo/100</td><td class="tv"><span class="swatch-dot" style="background:#eeeaff"></span>#eeeaff</td><td class="td">Subtle brand surface, tag backgrounds</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Surface/Crystal/hover</td><td class="tv">Crystal Indigo/700</td><td class="tv"><span class="swatch-dot" style="background:#39258a"></span>#39258a</td><td class="td">Hover state on brand surfaces</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Surface/Crystal/pressed</td><td class="tv">Crystal Indigo/800</td><td class="tv"><span class="swatch-dot" style="background:#2b1d66"></span>#2b1d66</td><td class="td">Pressed state on brand surfaces</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Surface/Crystal/dark</td><td class="tv">Crystal Indigo/900</td><td class="tv"><span class="swatch-dot" style="background:#1c1243"></span>#1c1243</td><td class="td">Darkest brand surface</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Surface/Crystal/disabled</td><td class="tv">Crystal Indigo/200</td><td class="tv"><span class="swatch-dot" style="background:#d5cef5"></span>#d5cef5</td><td class="td">Disabled brand surfaces</td></tr>
+        <tr><td colspan="4" class="st-group-label">Neutral</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Surface/Neutral/base</td><td class="tv">White</td><td class="tv"><span class="swatch-dot" style="background:#ffffff;border:1px solid #e8e8ed"></span>#ffffff</td><td class="td">Default surface — cards, modals, inputs</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Surface/Neutral/light</td><td class="tv">Neutral/100</td><td class="tv"><span class="swatch-dot" style="background:#f4f4f5"></span>#f4f4f5</td><td class="td">Secondary surface, table header fills</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Surface/Neutral/hover</td><td class="tv">Neutral/100</td><td class="tv"><span class="swatch-dot" style="background:#f4f4f5"></span>#f4f4f5</td><td class="td">Hover state on neutral surfaces</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Surface/Neutral/pressed</td><td class="tv">Neutral/200</td><td class="tv"><span class="swatch-dot" style="background:#d6d6db"></span>#d6d6db</td><td class="td">Pressed state on neutral surfaces</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Surface/Neutral/dark</td><td class="tv">Neutral/900</td><td class="tv"><span class="swatch-dot" style="background:#1c1c22"></span>#1c1c22</td><td class="td">Dark inverse surface</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Surface/Neutral/disabled</td><td class="tv">Neutral/300</td><td class="tv"><span class="swatch-dot" style="background:#b7b7c2"></span>#b7b7c2</td><td class="td">All disabled fills — universal rule</td></tr>
+        <tr><td colspan="4" class="st-group-label">Semantic</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Surface/Success/base</td><td class="tv">Success/500</td><td class="tv"><span class="swatch-dot" style="background:#46a456"></span>#46a456</td><td class="td">Filled success indicators</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Surface/Success/light</td><td class="tv">Success/100</td><td class="tv"><span class="swatch-dot" style="background:#e5f5e8"></span>#e5f5e8</td><td class="td">Subtle success fills</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Surface/Danger/base</td><td class="tv">Danger/500</td><td class="tv"><span class="swatch-dot" style="background:#d65a51"></span>#d65a51</td><td class="td">Filled error indicators</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Surface/Danger/light</td><td class="tv">Danger/100</td><td class="tv"><span class="swatch-dot" style="background:#f8e8e7"></span>#f8e8e7</td><td class="td">Subtle error fills</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Surface/Warning/base</td><td class="tv">Warning/500</td><td class="tv"><span class="swatch-dot" style="background:#e97720"></span>#e97720</td><td class="td">Filled warning indicators</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Surface/Warning/light</td><td class="tv">Warning/100</td><td class="tv"><span class="swatch-dot" style="background:#ffebdc"></span>#ffebdc</td><td class="td">Subtle warning fills</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Surface/Progress/base</td><td class="tv">Progress/500</td><td class="tv"><span class="swatch-dot" style="background:#ddb12c"></span>#ddb12c</td><td class="td">Progress bars, in-flight states</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Surface/Progress/light</td><td class="tv">Progress/100</td><td class="tv"><span class="swatch-dot" style="background:#faf4e0"></span>#faf4e0</td><td class="td">Subtle progress fills</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Surface/Discovery/base</td><td class="tv">Discovery/500</td><td class="tv"><span class="swatch-dot" style="background:#c7439b"></span>#c7439b</td><td class="td">Filled discovery indicators</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Surface/Discovery/light</td><td class="tv">Discovery/100</td><td class="tv"><span class="swatch-dot" style="background:#f7e4f0"></span>#f7e4f0</td><td class="td">Subtle discovery fills</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="fsec" id="st-text-section">
+    <div class="fhdr"><span class="fnum" style="color:var(--ne-400)">text</span><div class="ftb">
+      <h3 class="fh3">Text</h3>
+      <p class="fdesc">Neutral primary / secondary / tertiary establish typographic hierarchy. Semantic tokens for coloured states and on-surface text.</p>
+    </div></div>
+    <div class="ttw"><table>
+      <thead><tr><th>Token</th><th>Primitive</th><th>Hex</th><th>Usage</th></tr></thead>
+      <tbody>
+        <tr><td colspan="4" class="st-group-label">Neutral hierarchy</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Text/Neutral/primary</td><td class="tv">Neutral/700</td><td class="tv"><span class="swatch-dot" style="background:#454554"></span>#454554</td><td class="td">Main body text, headings</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Text/Neutral/secondary</td><td class="tv">Neutral/500</td><td class="tv"><span class="swatch-dot" style="background:#7b7b8e"></span>#7b7b8e</td><td class="td">Supporting text, helper labels, captions</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Text/Neutral/tertiary</td><td class="tv">Neutral/400</td><td class="tv"><span class="swatch-dot" style="background:#9999a8"></span>#9999a8</td><td class="td">Placeholder, de-emphasised text</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Text/Neutral/disabled</td><td class="tv">Neutral/300</td><td class="tv"><span class="swatch-dot" style="background:#b7b7c2"></span>#b7b7c2</td><td class="td">Disabled text — universal rule</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Text/Neutral/on-surface</td><td class="tv">White</td><td class="tv"><span class="swatch-dot" style="background:#ffffff;border:1px solid #e8e8ed"></span>#ffffff</td><td class="td">Text on dark filled surfaces</td></tr>
+        <tr><td colspan="4" class="st-group-label">Brand</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Text/Crystal/primary</td><td class="tv">Crystal Indigo/700</td><td class="tv"><span class="swatch-dot" style="background:#39258a"></span>#39258a</td><td class="td">Brand-coloured text, links, active labels</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Text/Crystal/on-surface</td><td class="tv">White</td><td class="tv"><span class="swatch-dot" style="background:#ffffff;border:1px solid #e8e8ed"></span>#ffffff</td><td class="td">Text on filled brand buttons and chips</td></tr>
+        <tr><td class="tn" style="color:var(--vb-700)">Color/Text/Valmo/primary</td><td class="tv">Valmo Blue/600</td><td class="tv"><span class="swatch-dot" style="background:#003f98"></span>#003f98</td><td class="td">Valmo brand text (Valmo panel only)</td></tr>
+        <tr><td colspan="4" class="st-group-label">Semantic</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Text/Success/primary</td><td class="tv">Success/700</td><td class="tv"><span class="swatch-dot" style="background:#276231"></span>#276231</td><td class="td">Success message text, positive labels</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Text/Success/on-surface</td><td class="tv">Success/100</td><td class="tv"><span class="swatch-dot" style="background:#e5f5e8"></span>#e5f5e8</td><td class="td">Text on filled success surfaces</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Text/Danger/primary</td><td class="tv">Danger/700</td><td class="tv"><span class="swatch-dot" style="background:#9c241c"></span>#9c241c</td><td class="td">Error message text, destructive labels</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Text/Danger/on-surface</td><td class="tv">Danger/100</td><td class="tv"><span class="swatch-dot" style="background:#f8e8e7"></span>#f8e8e7</td><td class="td">Text on filled danger surfaces</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Text/Warning/primary</td><td class="tv">Warning/700</td><td class="tv"><span class="swatch-dot" style="background:#a75211"></span>#a75211</td><td class="td">Caution message text</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Text/Warning/on-surface</td><td class="tv">Warning/100</td><td class="tv"><span class="swatch-dot" style="background:#ffebdc"></span>#ffebdc</td><td class="td">Text on filled warning surfaces</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Text/Progress/primary</td><td class="tv">Progress/700</td><td class="tv"><span class="swatch-dot" style="background:#846815"></span>#846815</td><td class="td">Progress state text</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Text/Discovery/primary</td><td class="tv">Discovery/700</td><td class="tv"><span class="swatch-dot" style="background:#76235a"></span>#76235a</td><td class="td">New feature labels, onboarding text</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="fsec" id="st-border-section">
+    <div class="fhdr"><span class="fnum" style="color:var(--ne-400)">border</span><div class="ftb">
+      <h3 class="fh3">Border</h3>
+      <p class="fdesc">Light borders for subtle separation; dark borders for focus, active, and error states.</p>
+    </div></div>
+    <div class="ttw"><table>
+      <thead><tr><th>Token</th><th>Primitive</th><th>Hex</th><th>Usage</th></tr></thead>
+      <tbody>
+        <tr><td colspan="4" class="st-group-label">Neutral</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Border/Neutral/light</td><td class="tv">Neutral/200</td><td class="tv"><span class="swatch-dot" style="background:#d6d6db"></span>#d6d6db</td><td class="td">Default container, input, and divider borders</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Border/Neutral/dark</td><td class="tv">Neutral/400</td><td class="tv"><span class="swatch-dot" style="background:#9999a8"></span>#9999a8</td><td class="td">Emphasised neutral borders</td></tr>
+        <tr><td colspan="4" class="st-group-label">Brand</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Border/Crystal/light</td><td class="tv">Crystal Indigo/200</td><td class="tv"><span class="swatch-dot" style="background:#d5cef5"></span>#d5cef5</td><td class="td">Subtle brand border, selected card outline</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Border/Crystal/dark</td><td class="tv">Crystal Indigo/400</td><td class="tv"><span class="swatch-dot" style="background:#856ee0"></span>#856ee0</td><td class="td">Focus ring, active/selected input border</td></tr>
+        <tr><td class="tn" style="color:var(--vb-700)">Color/Border/Valmo/light</td><td class="tv">Valmo Blue/200</td><td class="tv"><span class="swatch-dot" style="background:#b8d5fe"></span>#b8d5fe</td><td class="td">Subtle Valmo brand border (Valmo panel)</td></tr>
+        <tr><td class="tn" style="color:var(--vb-700)">Color/Border/Valmo/dark</td><td class="tv">Valmo Blue/400</td><td class="tv"><span class="swatch-dot" style="background:#3488fe"></span>#3488fe</td><td class="td">Valmo focus ring, active border (Valmo panel)</td></tr>
+        <tr><td colspan="4" class="st-group-label">Semantic</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Border/Success/light</td><td class="tv">Success/200</td><td class="tv"><span class="swatch-dot" style="background:#c7e6cc"></span>#c7e6cc</td><td class="td">Subtle success border</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Border/Success/dark</td><td class="tv">Success/400</td><td class="tv"><span class="swatch-dot" style="background:#6fbe7c"></span>#6fbe7c</td><td class="td">Prominent success border</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Border/Danger/light</td><td class="tv">Danger/200</td><td class="tv"><span class="swatch-dot" style="background:#edccc9"></span>#edccc9</td><td class="td">Subtle error border</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Border/Danger/dark</td><td class="tv">Danger/400</td><td class="tv"><span class="swatch-dot" style="background:#da827c"></span>#da827c</td><td class="td">Input error state border</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Border/Warning/light</td><td class="tv">Warning/200</td><td class="tv"><span class="swatch-dot" style="background:#f9dac3"></span>#f9dac3</td><td class="td">Subtle warning border</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Border/Warning/dark</td><td class="tv">Warning/400</td><td class="tv"><span class="swatch-dot" style="background:#f1aa74"></span>#f1aa74</td><td class="td">Prominent warning border</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Border/Progress/light</td><td class="tv">Progress/200</td><td class="tv"><span class="swatch-dot" style="background:#f4e7bd"></span>#f4e7bd</td><td class="td">Subtle progress border</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Border/Progress/dark</td><td class="tv">Progress/400</td><td class="tv"><span class="swatch-dot" style="background:#e5c35d"></span>#e5c35d</td><td class="td">Prominent progress border</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Border/Discovery/light</td><td class="tv">Discovery/200</td><td class="tv"><span class="swatch-dot" style="background:#edc4e0"></span>#edc4e0</td><td class="td">Subtle discovery border</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Border/Discovery/dark</td><td class="tv">Discovery/400</td><td class="tv"><span class="swatch-dot" style="background:#d46eb2"></span>#d46eb2</td><td class="td">Prominent discovery border</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="fsec" id="st-icon-section">
+    <div class="fhdr"><span class="fnum" style="color:var(--ne-400)">icon</span><div class="ftb">
+      <h3 class="fh3">Icon</h3>
+      <p class="fdesc">Icon colours mirror the text token structure. on-surface tokens keep icons visible on filled backgrounds.</p>
+    </div></div>
+    <div class="ttw"><table>
+      <thead><tr><th>Token</th><th>Primitive</th><th>Hex</th><th>Usage</th></tr></thead>
+      <tbody>
+        <tr><td colspan="4" class="st-group-label">Neutral</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Icon/Neutral/primary</td><td class="tv">Neutral/700</td><td class="tv"><span class="swatch-dot" style="background:#454554"></span>#454554</td><td class="td">Default UI icons</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Icon/Neutral/secondary</td><td class="tv">Neutral/600</td><td class="tv"><span class="swatch-dot" style="background:#606071"></span>#606071</td><td class="td">Supporting, trailing icons</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Icon/Neutral/on-surface</td><td class="tv">White</td><td class="tv"><span class="swatch-dot" style="background:#ffffff;border:1px solid #e8e8ed"></span>#ffffff</td><td class="td">Icons on dark surfaces</td></tr>
+        <tr><td colspan="4" class="st-group-label">Brand</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Icon/Crystal/primary</td><td class="tv">Crystal Indigo/700</td><td class="tv"><span class="swatch-dot" style="background:#39258a"></span>#39258a</td><td class="td">Primary brand icons</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Icon/Crystal/secondary</td><td class="tv">Crystal Indigo/600</td><td class="tv"><span class="swatch-dot" style="background:#4c31b9"></span>#4c31b9</td><td class="td">Secondary brand icons, active nav icons</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Icon/Crystal/on-surface</td><td class="tv">White</td><td class="tv"><span class="swatch-dot" style="background:#ffffff;border:1px solid #e8e8ed"></span>#ffffff</td><td class="td">Icons on filled brand surfaces</td></tr>
+        <tr><td class="tn" style="color:var(--vb-700)">Color/Icon/Valmo/primary</td><td class="tv">Valmo Blue/700</td><td class="tv"><span class="swatch-dot" style="background:#003073"></span>#003073</td><td class="td">Primary Valmo brand icons (Valmo panel)</td></tr>
+        <tr><td class="tn" style="color:var(--vb-700)">Color/Icon/Valmo/secondary</td><td class="tv">Valmo Blue/600</td><td class="tv"><span class="swatch-dot" style="background:#003f98"></span>#003f98</td><td class="td">Secondary Valmo icons (Valmo panel)</td></tr>
+        <tr><td class="tn" style="color:var(--vb-700)">Color/Icon/Valmo/on-surface</td><td class="tv">White</td><td class="tv"><span class="swatch-dot" style="background:#ffffff;border:1px solid #e8e8ed"></span>#ffffff</td><td class="td">Icons on filled Valmo surfaces</td></tr>
+        <tr><td colspan="4" class="st-group-label">Semantic</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Icon/Success/primary</td><td class="tv">Success/700</td><td class="tv"><span class="swatch-dot" style="background:#276231"></span>#276231</td><td class="td">Success state icons</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Icon/Success/secondary</td><td class="tv">Success/600</td><td class="tv"><span class="swatch-dot" style="background:#358242"></span>#358242</td><td class="td">Supporting success icons</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Icon/Success/on-surface</td><td class="tv">White</td><td class="tv"><span class="swatch-dot" style="background:#ffffff;border:1px solid #e8e8ed"></span>#ffffff</td><td class="td">Icons on filled success surfaces</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Icon/Danger/primary</td><td class="tv">Danger/700</td><td class="tv"><span class="swatch-dot" style="background:#9c241c"></span>#9c241c</td><td class="td">Error and destructive icons</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Icon/Danger/secondary</td><td class="tv">Danger/600</td><td class="tv"><span class="swatch-dot" style="background:#c03a30"></span>#c03a30</td><td class="td">Supporting danger icons</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Icon/Danger/on-surface</td><td class="tv">White</td><td class="tv"><span class="swatch-dot" style="background:#ffffff;border:1px solid #e8e8ed"></span>#ffffff</td><td class="td">Icons on filled danger surfaces</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Icon/Warning/primary</td><td class="tv">Warning/700</td><td class="tv"><span class="swatch-dot" style="background:#a75211"></span>#a75211</td><td class="td">Caution icons</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Icon/Warning/on-surface</td><td class="tv">White</td><td class="tv"><span class="swatch-dot" style="background:#ffffff;border:1px solid #e8e8ed"></span>#ffffff</td><td class="td">Icons on filled warning surfaces</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Icon/Discovery/primary</td><td class="tv">Discovery/700</td><td class="tv"><span class="swatch-dot" style="background:#76235a"></span>#76235a</td><td class="td">Discovery and onboarding icons</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Icon/Discovery/secondary</td><td class="tv">Discovery/600</td><td class="tv"><span class="swatch-dot" style="background:#a1307b"></span>#a1307b</td><td class="td">Supporting discovery icons</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Color/Icon/Discovery/on-surface</td><td class="tv">White</td><td class="tv"><span class="swatch-dot" style="background:#ffffff;border:1px solid #e8e8ed"></span>#ffffff</td><td class="td">Icons on filled discovery surfaces</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <!-- SPACING -->
+  <div class="fsec" id="st-spacing-section">
+    <div class="fhdr"><span class="fnum" style="color:var(--ne-400)">spacing</span><div class="ftb">
+      <h3 class="fh3">Spacing</h3>
+      <p class="fdesc">Semantic spacing tokens for Padding, Gap, and Margin. Each maps to a primitive value.</p>
+    </div></div>
+    <div class="ttw"><table>
+      <thead><tr><th>Token</th><th>Primitive</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td colspan="3" class="st-group-label">Padding</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Spacing/Padding/2xs</td><td class="tv">space-4</td><td class="tv">4px</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Spacing/Padding/xs</td><td class="tv">space-8</td><td class="tv">8px</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Spacing/Padding/sm</td><td class="tv">space-12</td><td class="tv">12px</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Spacing/Padding/md</td><td class="tv">space-16</td><td class="tv">16px</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Spacing/Padding/lg</td><td class="tv">space-24</td><td class="tv">24px</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Spacing/Padding/xl</td><td class="tv">space-32</td><td class="tv">32px</td></tr>
+        <tr><td colspan="3" class="st-group-label">Gap</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Spacing/Gap/2xs</td><td class="tv">space-4</td><td class="tv">4px</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Spacing/Gap/xs</td><td class="tv">space-8</td><td class="tv">8px</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Spacing/Gap/sm</td><td class="tv">space-12</td><td class="tv">12px</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Spacing/Gap/md</td><td class="tv">space-16</td><td class="tv">16px</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Spacing/Gap/lg</td><td class="tv">space-24</td><td class="tv">24px</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Spacing/Gap/xl</td><td class="tv">space-32</td><td class="tv">32px</td></tr>
+        <tr><td colspan="3" class="st-group-label">Margin</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Spacing/Margin/sm</td><td class="tv">space-16</td><td class="tv">16px</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Spacing/Margin/md</td><td class="tv">space-24</td><td class="tv">24px</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Spacing/Margin/lg</td><td class="tv">space-32</td><td class="tv">32px</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <!-- BORDER RADIUS -->
+  <div class="fsec" id="st-radius-section">
+    <div class="fhdr"><span class="fnum" style="color:var(--ne-400)">radius</span><div class="ftb">
+      <h3 class="fh3">Border Radius</h3>
+      <p class="fdesc">Semantic component-level aliases mapping to the 8 primitive radius values.</p>
+    </div></div>
+    <div class="ttw"><table>
+      <thead><tr><th>Token</th><th>Value</th><th>Applied to</th></tr></thead>
+      <tbody>
+        <tr><td colspan="3" class="st-group-label">Button</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Border Radius/Button/primary</td><td class="tv">6px</td><td class="td">All button variants</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Border Radius/Button/secondary</td><td class="tv">6px</td><td class="td">Secondary buttons</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Border Radius/Button/icon</td><td class="tv">6px</td><td class="td">Icon buttons</td></tr>
+        <tr><td colspan="3" class="st-group-label">Form</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Border Radius/Form/Input</td><td class="tv">6px</td><td class="td">Text inputs</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Border Radius/Form/checkbox</td><td class="tv">2px</td><td class="td">Checkboxes</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Border Radius/Form/radio button</td><td class="tv">9999px</td><td class="td">Radio buttons</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Border Radius/Form/toggle</td><td class="tv">9999px</td><td class="td">Toggle switches</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Border Radius/Form/dropdown</td><td class="tv">6px</td><td class="td">Dropdown menus</td></tr>
+        <tr><td colspan="3" class="st-group-label">Container</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Border Radius/Container/Card</td><td class="tv">8px</td><td class="td">Cards, table containers</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Border Radius/Container/Pop-over</td><td class="tv">8px</td><td class="td">Popovers, tooltips</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Border Radius/Container/Modal</td><td class="tv">12px</td><td class="td">Modals, sheet dialogs</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Border Radius/Container/Bottom sheet</td><td class="tv">0px</td><td class="td">Bottom sheets (full bleed)</td></tr>
+        <tr><td colspan="3" class="st-group-label">Label</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Border Radius/Label/tag</td><td class="tv">4px</td><td class="td">Tags, badges</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Border Radius/Label/pill</td><td class="tv">9999px</td><td class="td">Pills, toggle chips</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Border Radius/Label/status-chip</td><td class="tv">4px</td><td class="td">Status indicators</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Border Radius/Label/tool tip</td><td class="tv">6px</td><td class="td">Tooltips</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Border Radius/Label/counter</td><td class="tv">9999px</td><td class="td">Counter badges</td></tr>
+        <tr><td colspan="3" class="st-group-label">Media</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Border Radius/Media/avatar</td><td class="tv">9999px</td><td class="td">Circular avatars</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Border Radius/Media/avatar-square</td><td class="tv">6px</td><td class="td">Square avatars</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Border Radius/Media/image</td><td class="tv">4px</td><td class="td">Image crops</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Border Radius/Media/thumbnail large</td><td class="tv">12px</td><td class="td">Large thumbnails</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">Border Radius/Media/thumbnail small</td><td class="tv">8px</td><td class="td">Small thumbnails</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <!-- ELEVATION -->
+  <div class="fsec" id="st-elevation-section">
+    <div class="fhdr"><span class="fnum" style="color:var(--ne-400)">elevation</span><div class="ftb">
+      <h3 class="fh3">Elevation</h3>
+      <p class="fdesc">Shadow tokens using layered box-shadows. All share the same colour: #1C1C22 at 16% opacity.</p>
+    </div></div>
+    <div class="ttw"><table>
+      <thead><tr><th>Token</th><th>Shadow 1</th><th>Shadow 2</th><th>Usage</th></tr></thead>
+      <tbody>
+        <tr><td class="tn" style="color:var(--ci-700)">elevation/low_raised/top</td><td class="tv">0 2px 6px 0 #1C1C2229</td><td class="tv">0 0 2px 0 #1C1C2229</td><td class="td">Headers (in scroll), Switch, Sliders</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">elevation/low_raised/bottom</td><td class="tv">0 −2px 6px 0 #1C1C2229</td><td class="tv">0 0 2px 0 #1C1C2229</td><td class="td">Footers</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">elevation/mid_raised</td><td class="tv">0 4px 12px 0 #1C1C2229</td><td class="tv">0 0 2px 0 #1C1C2229</td><td class="td">Dropdown, Filters, Date picker, Time picker, Selector, File drop box, Toasts, Notifications</td></tr>
+        <tr><td class="tn" style="color:var(--ci-700)">elevation/high_raised</td><td class="tv">0 4px 20px 2px #1C1C2229</td><td class="tv">0 0 2px 0 #1C1C2229</td><td class="td">Modals, Popups, Coachmarks, Tooltips, Map tooltips, Side drawers, Bottom sheets</td></tr>
+      </tbody>
+    </table></div>
+    <div class="ttw"><table>
+      <thead><tr><th>Drop shadow property</th><th>Variable values</th></tr></thead>
+      <tbody>
+        <tr><td class="td" style="font-weight:600">Position X</td><td class="tv">0</td></tr>
+        <tr><td class="td" style="font-weight:600">Position Y</td><td class="tv">−2, 0, 2, 4</td></tr>
+        <tr><td class="td" style="font-weight:600">Blur</td><td class="tv">2, 6, 12, 20</td></tr>
+        <tr><td class="td" style="font-weight:600">Spread</td><td class="tv">0, 2</td></tr>
+        <tr><td class="td" style="font-weight:600">Colour hex</td><td class="tv">#1C1C22 at 16%</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</div>
+
+<div class="ft-wrap">
+  <div class="ft">
+    <p class="ftxt">Meesho · Web Design System · Foundations v1 · Prachi Gautam, Platform Designer II</p>
+    <div class="fpills"><span class="fpill">DM Sans</span><span class="fpill">Figma Variables</span><span class="fpill">Supplier + Valmo</span></div>
+  </div>
+</div>
+
+</div><!-- /main -->
+</div><!-- /page-body -->
+
+<script>
+function sw(panel, tab) {
+  const t = document.getElementById(panel+'-type-widget');
+  t.querySelectorAll('.tytab').forEach((el,i) => {
+    const isActive = (tab==='d' && i===0) || (tab==='m' && i===1);
+    el.classList.toggle('active', isActive);
+    el.style.color = isActive ? 'var(--ci-600)' : 'var(--text-3)';
+  });
+  document.getElementById(panel+'-d').classList.toggle('active', tab==='d');
+  document.getElementById(panel+'-m').classList.toggle('active', tab==='m');
+}
+
+// Sidebar scroll spy — clean scroll listener, no IntersectionObserver lag
+const allSections = ['hero','s-color','s-spacing','s-radius','s-type','s-elevation','valmo','v-color','v-shared','semantic-tokens','st-bg-section','st-surface-section','st-text-section','st-border-section','st-icon-section','st-spacing-section','st-radius-section','st-elevation-section'];
+
+const navMap = {
+  'hero':'sbnav-supplier','valmo':'sbnav-valmo','semantic-tokens':'sbnav-semantic',
+  's-color':'sbsub-s-color','s-spacing':'sbsub-s-spacing','s-radius':'sbsub-s-radius',
+  's-type':'sbsub-s-type','s-elevation':'sbsub-s-elevation',
+  'v-color':'sbsub-v-color','v-shared':'sbsub-v-shared',
+  'st-bg-section':'sbsub-st-bg-section','st-surface-section':'sbsub-st-surface-section',
+  'st-text-section':'sbsub-st-text-section','st-border-section':'sbsub-st-border-section',
+  'st-icon-section':'sbsub-st-icon-section',
+  'st-spacing-section':'sbsub-st-spacing-section',
+  'st-radius-section':'sbsub-st-radius-section',
+  'st-elevation-section':'sbsub-st-elevation-section'
+};
+
+const parentMap = {
+  's-color':'sbnav-supplier','s-spacing':'sbnav-supplier','s-radius':'sbnav-supplier',
+  's-type':'sbnav-supplier','s-elevation':'sbnav-supplier',
+  'v-color':'sbnav-valmo','v-shared':'sbnav-valmo',
+  'st-bg-section':'sbnav-semantic','st-surface-section':'sbnav-semantic',
+  'st-text-section':'sbnav-semantic','st-border-section':'sbnav-semantic',
+  'st-icon-section':'sbnav-semantic','st-spacing-section':'sbnav-semantic',
+  'st-radius-section':'sbnav-semantic','st-elevation-section':'sbnav-semantic'
+};
+
+// Assign IDs to sub-links
+document.querySelectorAll('.sb-sub a').forEach(a => {
+  const href = a.getAttribute('href').replace('#','');
+  a.id = 'sbsub-' + href;
+});
+
+let skipScroll = false;
+
+function setActive(id) {
+  document.querySelectorAll('.sb-nav a, .sb-sub a').forEach(a => a.classList.remove('active'));
+  const navId = navMap[id];
+  if (navId) document.getElementById(navId)?.classList.add('active');
+  const pid = parentMap[id];
+  if (pid) document.getElementById(pid)?.classList.add('active');
+}
+
+// On scroll: find the section closest to the top of the viewport
+function onScroll() {
+  if (skipScroll) return;
+  const offset = 100;
+  let current = allSections[0];
+  for (const id of allSections) {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top <= offset) current = id;
+  }
+  setActive(current);
+}
+
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+
+// On click: instantly set active, pause scroll spy briefly so it doesn't fight
+document.querySelectorAll('.sb-nav a, .sb-sub a').forEach(a => {
+  a.addEventListener('click', () => {
+    const id = a.getAttribute('href')?.replace('#','');
+    if (id) {
+      setActive(id);
+      skipScroll = true;
+      setTimeout(() => { skipScroll = false; }, 600);
+    }
+  });
+});
+</script>
+</body>
+</html>
